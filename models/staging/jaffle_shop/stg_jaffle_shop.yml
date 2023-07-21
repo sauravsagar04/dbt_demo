@@ -1,22 +1,11 @@
 version: 2
 
 models:
-  - name: customers
-    description: One record per customer
-    columns:
-      - name: customer_id
-        description: Primary key
-        tests:
-          - unique
-          - not_null
-      - name: first_order_date
-        description: NULL when a customer has not yet placed an order.
-
   - name: stg_customers
-    description: This model cleans up customer data
+    description: one unique customer per row
     columns:
       - name: customer_id
-        description: Primary key
+        description: Primary key for stg_customers table
         tests:
           - unique
           - not_null
@@ -30,6 +19,13 @@ models:
           - unique
           - not_null
       - name: status
+        description: '{{ doc("order_status") }}'
         tests:
           - accepted_values:
               values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
+      - name: customer_id
+        description: Foreign key to stg_customers.customer_id.
+        tests:
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
