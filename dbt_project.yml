@@ -29,3 +29,13 @@ models:
       +materialized: view
 
 
+on-run-end: 
+  - "{{ generic_tests() }}"
+
+vars:
+  status:
+  date_type: "DATE"
+
+  info_schema: "information_schema.columns"
+
+
